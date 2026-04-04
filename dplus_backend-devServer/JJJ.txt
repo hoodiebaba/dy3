@@ -1,0 +1,118 @@
+{
+  "data": [
+    {
+      "data": {
+        "region": [
+          {
+            "indexi": null,
+            "name": null
+          },
+          {
+            "indexi": "Coast",
+            "name": "Coast"
+          },
+          {
+            "indexi": "Greater Western",
+            "name": "Greater Western"
+          },
+          {
+            "indexi": "Mountain",
+            "name": "Mountain"
+          },
+          {
+            "indexi": "Nairobi Metropolitan",
+            "name": "Nairobi Metropolitan"
+          },
+          {
+            "indexi": "Rift",
+            "name": "Rift"
+          }
+        ],
+        "tech": [
+          {
+            "indexi": "2G_sp_GSM1800",
+            "name": "GSM1800",
+            "parentName": "2G"
+          },
+          {
+            "indexi": "2G_sp_GSM900",
+            "name": "GSM900",
+            "parentName": "2G"
+          },
+          {
+            "indexi": "3G_sp_U2100-C1",
+            "name": "U2100-C1",
+            "parentName": "3G"
+          },
+          {
+            "indexi": "3G_sp_U2100-C2",
+            "name": "U2100-C2",
+            "parentName": "3G"
+          },
+          {
+            "indexi": "3G_sp_U2100-C3",
+            "name": "U2100-C3",
+            "parentName": "3G"
+          },
+          {
+            "indexi": "3G_sp_U2100-C4",
+            "name": "U2100-C4",
+            "parentName": "3G"
+          },
+          {
+            "indexi": "3G_sp_U2100-C5",
+            "name": "U2100-C5",
+            "parentName": "3G"
+          },
+          {
+            "indexi": "3G_sp_U900-C1",
+            "name": "U900-C1",
+            "parentName": "3G"
+          },
+          {
+            "indexi": "3G_sp_U900-C2",
+            "name": "U900-C2",
+            "parentName": "3G"
+          },
+          {
+            "indexi": "4G_sp_LTDD2600",
+            "name": "LTDD2600",
+            "parentName": "4G"
+          },
+          {
+            "indexi": "4G_sp_LTE1800-C1",
+            "name": "LTE1800-C1",
+            "parentName": "4G"
+          },
+          {
+            "indexi": "4G_sp_LTE1800-C2",
+            "name": "LTE1800-C2",
+            "parentName": "4G"
+          },
+          {
+            "indexi": "4G_sp_LTE2100",
+            "name": "LTE2100",
+            "parentName": "4G"
+          },
+          {
+            "indexi": "4G_sp_LTE800",
+            "name": "LTE800",
+            "parentName": "4G"
+          },
+          {
+            "indexi": "5G_sp_NR2600",
+            "name": "NR2600",
+            "parentName": "5G"
+          },
+          {
+            "indexi": "5G_sp_NR3500",
+            "name": "NR3500",
+            "parentName": "5G"
+          }
+        ]
+      }
+    }
+  ],
+  "msg": "",
+  "status": 200
+}

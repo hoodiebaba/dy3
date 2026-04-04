@@ -1,0 +1,29 @@
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Dependencies
+node_modules/
+**/node_modules/
+.venv/
+**/.venv*/
+venv/
+**/venv/
+
+# Build / cache
+dist/
+build/
+**/.vite/
+.cache/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+*.log

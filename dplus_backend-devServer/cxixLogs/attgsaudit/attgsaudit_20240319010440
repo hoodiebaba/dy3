@@ -1,0 +1,19 @@
+AT&T GS Audit --2024-03-19 01:04:40,336 -- common_func.custom_log -- Started running job for AT&T GS Audit Site : sdfghj
+AT&T GS Audit --2024-03-19 01:04:40,337 -- common_func.custom_log -- 
+AT&T GS Audit --2024-03-19 01:04:40,338 -- common_func.custom_log -- Site: sdfghj
+AT&T GS Audit --2024-03-19 01:04:40,338 -- common_func.custom_log -- SW Version: ATT_23Q3
+AT&T GS Audit --2024-03-19 01:04:40,339 -- common_func.custom_log -- Market: LA
+AT&T GS Audit --2024-03-19 01:04:40,339 -- common_func.custom_log -- DlOnly: ['fsdfsdfsd']
+AT&T GS Audit --2024-03-19 01:04:40,339 -- common_func.custom_log -- Fento: ['fdsfsdfs']
+AT&T GS Audit --2024-03-19 01:04:40,340 -- common_func.custom_log -- 
+AT&T GS Audit --2024-03-19 01:04:40,984 -- common_func.custom_log -- message
+NoneType: None
+AT&T GS Audit --2024-03-19 01:04:40,985 -- common_func.custom_log -- Job completed for AT&T GS Audit Site no Log Files Found, Status: Failed!!!
+AT&T GS Audit --2024-03-19 01:04:40,985 -- common_func.custom_log -- message
+Traceback (most recent call last):
+  File "E:\Datayog\mScripter\attgsaudit\attgsaudit_jobs.py", line 27, in attgsaudit_jobs
+    usid = GSAuditUSID(software_log, job, custom_log, outdir)
+  File "E:\Datayog\mScripter\attgsaudit\att_gsaudit\GSAuditUSID.py", line 47, in __init__
+    assert False, F'!!! Log Files not Found !!! '
+AssertionError: !!! Log Files not Found !!! 
+AT&T GS Audit --2024-03-19 01:04:40,989 -- common_func.custom_log -- Job completed for AT&T GS Audit Site : sdfghj, Status: Failed!!!

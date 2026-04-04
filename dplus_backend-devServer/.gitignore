@@ -1,0 +1,72 @@
+# ========================
+# ENV / SECRETS
+# ========================
+.env
+<<<<<<< HEAD
+env.*
+*.env
+=======
+.env.*
+*.env
+env.example
+>>>>>>> prodServer
+secrets.json
+credentials.json
+*.pem
+*.key
+*.crt
+
+# ========================
+# PYTHON
+# ========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+
+venv/
+env/
+mac_env/
+
+# ========================
+# DJANGO / APP FILES
+# ========================
+db.sqlite3
+media/
+staticfiles/
+uploads/
+output/
+input/
+
+# ========================
+# CACHE
+# ========================
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+coverage/
+htmlcov/
+
+# ========================
+# LOGS
+# ========================
+*.log
+logs/
+
+# ========================
+# IDE
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ========================
+# OS
+# ========================
+.DS_Store
+Thumbs.db

@@ -1,0 +1,118 @@
+{
+    "data": [
+        {
+            "data": {
+                "region": [
+                    {
+                        "id": null,
+                        "name": null
+                    },
+                    {
+                        "id": "Coast",
+                        "name": "Coast"
+                    },
+                    {
+                        "id": "Greater Western",
+                        "name": "Greater Western"
+                    },
+                    {
+                        "id": "Mountain",
+                        "name": "Mountain"
+                    },
+                    {
+                        "id": "Nairobi Metropolitan",
+                        "name": "Nairobi Metropolitan"
+                    },
+                    {
+                        "id": "Rift",
+                        "name": "Rift"
+                    }
+                ],
+                "tech": [
+                    {
+                        "category": "2G",
+                        "id": "2G_sp_GSM1800",
+                        "name": "GSM1800"
+                    },
+                    {
+                        "category": "2G",
+                        "id": "2G_sp_GSM900",
+                        "name": "GSM900"
+                    },
+                    {
+                        "category": "3G",
+                        "id": "3G_sp_U2100-C1",
+                        "name": "U2100-C1"
+                    },
+                    {
+                        "category": "3G",
+                        "id": "3G_sp_U2100-C2",
+                        "name": "U2100-C2"
+                    },
+                    {
+                        "category": "3G",
+                        "id": "3G_sp_U2100-C3",
+                        "name": "U2100-C3"
+                    },
+                    {
+                        "category": "3G",
+                        "id": "3G_sp_U2100-C4",
+                        "name": "U2100-C4"
+                    },
+                    {
+                        "category": "3G",
+                        "id": "3G_sp_U2100-C5",
+                        "name": "U2100-C5"
+                    },
+                    {
+                        "category": "3G",
+                        "id": "3G_sp_U900-C1",
+                        "name": "U900-C1"
+                    },
+                    {
+                        "category": "3G",
+                        "id": "3G_sp_U900-C2",
+                        "name": "U900-C2"
+                    },
+                    {
+                        "category": "4G",
+                        "id": "4G_sp_LTDD2600",
+                        "name": "LTDD2600"
+                    },
+                    {
+                        "category": "4G",
+                        "id": "4G_sp_LTE1800-C1",
+                        "name": "LTE1800-C1"
+                    },
+                    {
+                        "category": "4G",
+                        "id": "4G_sp_LTE1800-C2",
+                        "name": "LTE1800-C2"
+                    },
+                    {
+                        "category": "4G",
+                        "id": "4G_sp_LTE2100",
+                        "name": "LTE2100"
+                    },
+                    {
+                        "category": "4G",
+                        "id": "4G_sp_LTE800",
+                        "name": "LTE800"
+                    },
+                    {
+                        "category": "5G",
+                        "id": "5G_sp_NR2600",
+                        "name": "NR2600"
+                    },
+                    {
+                        "category": "5G",
+                        "id": "5G_sp_NR3500",
+                        "name": "NR3500"
+                    }
+                ]
+            }
+        }
+    ],
+    "msg": "",
+    "status": 200
+}

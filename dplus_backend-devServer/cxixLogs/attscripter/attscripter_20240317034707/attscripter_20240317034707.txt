@@ -1,0 +1,33 @@
+AT&T Scripting --2024-03-17 03:47:07,134 -- common_func.custom_log -- Started Running Job for AT&T Site IE94725A
+AT&T Scripting --2024-03-17 03:47:07,135 -- common_func.custom_log -- Loading/Extracting data from CIQ and DCGK files into memory
+AT&T Scripting --2024-03-17 03:47:07,955 -- common_func.custom_log -- message
+Traceback (most recent call last):
+  File "E:\Datayog\mScripter\attscripter\att_ix\att_ciq_data.py", line 271, in get_gnodeb_cell_data
+    ssb = ssbFrequency.objects.get(mname=self.client.mname, arfcndl=row.arfcndl, bschannelbwdl=row.bschannelbwdl)
+  File "C:\Users\Omen\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Omen\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\query.py", line 637, in get
+    raise self.model.DoesNotExist(
+attscripter.models.ssbFrequency.DoesNotExist: ssbFrequency matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\Datayog\mScripter\attscripter\att_ix\aa_att_script_job.py", line 47, in aa_att_script_job
+    usid = att_usid_data(client=client, cix_file=cix_file, zip_file=software_log, sites=sites, base_dir=outdir, log=custom_log)
+  File "E:\Datayog\mScripter\attscripter\att_ix\att_usid_data.py", line 20, in __init__
+    self.cix = att_ciq_data(infile=cix_file, client=self.client)
+  File "E:\Datayog\mScripter\attscripter\att_ix\att_ciq_data.py", line 187, in __init__
+    'ssboffset', 'ssbperiodicity', 'ssbsubcarrierspacing', 'freqband', 'carrier']] = self.edx.get('gUtranCell').apply(
+  File "C:\Users\Omen\AppData\Local\Programs\Python\Python39\lib\site-packages\pandas\core\frame.py", line 10347, in apply
+    return op.apply().__finalize__(self, method="apply")
+  File "C:\Users\Omen\AppData\Local\Programs\Python\Python39\lib\site-packages\pandas\core\apply.py", line 916, in apply
+    return self.apply_standard()
+  File "C:\Users\Omen\AppData\Local\Programs\Python\Python39\lib\site-packages\pandas\core\apply.py", line 1063, in apply_standard
+    results, res_index = self.apply_series_generator()
+  File "C:\Users\Omen\AppData\Local\Programs\Python\Python39\lib\site-packages\pandas\core\apply.py", line 1081, in apply_series_generator
+    results[i] = self.func(v, *self.args, **self.kwargs)
+  File "E:\Datayog\mScripter\attscripter\att_ix\att_ciq_data.py", line 275, in get_gnodeb_cell_data
+    assert False, F'!!! ssbFrequency DataBase doesnot have instance ' \
+AssertionError: !!! ssbFrequency DataBase doesnot have instance "arfcnDL-->174800, bSChannelBwDL-->10" for Market ILLINOIS"  !!!
+AT&T Scripting --2024-03-17 03:47:07,966 -- common_func.custom_log -- Job completed for AT&T Site IE94725A, Status: Failed!!!

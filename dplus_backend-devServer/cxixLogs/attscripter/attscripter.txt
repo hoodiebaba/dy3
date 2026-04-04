@@ -1,0 +1,20 @@
+AT&T Scripting --2024-03-16 23:50:43,507 -- common_func.custom_log -- Started Running Job for AT&T Site w2121321
+AT&T Scripting --2024-03-16 23:50:43,508 -- common_func.custom_log -- Loading/Extracting data from CIQ and DCGK files into memory
+AT&T Scripting --2024-03-16 23:50:43,540 -- common_func.custom_log -- message
+Traceback (most recent call last):
+  File "E:\Datayog\mScripter\attscripter\att_ix\aa_att_script_job.py", line 43, in aa_att_script_job
+    usid = att_usid_data(client=client, cix_file=cix_file, zip_file=software_log, sites=sites, base_dir=outdir, log=custom_log)
+  File "E:\Datayog\mScripter\attscripter\att_ix\att_usid_data.py", line 32, in __init__
+    dcgk_extract = dcgkextract(inzip=zip_file)
+  File "E:\Datayog\mScripter\common_func\dcgkextract.py", line 13, in __init__
+    self.log_dirs = None if self.inzip is None or len(self.inzip) == 0 else self.extract_all_zip(self.inzip)
+  File "E:\Datayog\mScripter\common_func\dcgkextract.py", line 20, in extract_all_zip
+    outdir = self.extract_dir(inzip)
+  File "E:\Datayog\mScripter\common_func\dcgkextract.py", line 29, in extract_dir
+    self.extract_zip(inzip, outdir)
+  File "E:\Datayog\mScripter\common_func\dcgkextract.py", line 43, in extract_zip
+    with ZipFile(inzip, 'r') as zip_file: zip_file.extractall(outdir)
+  File "C:\Users\Omen\AppData\Local\Programs\Python\Python39\lib\zipfile.py", line 1239, in __init__
+    self.fp = io.open(file, filemode)
+FileNotFoundError: [Errno 2] No such file or directory: '200'
+AT&T Scripting --2024-03-16 23:50:43,541 -- common_func.custom_log -- Job completed for AT&T Site w2121321, Status: Failed!!!

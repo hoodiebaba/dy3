@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <head><meta charset="utf-8"><title>debug-auth</title></head>
+  <body>
+    <script>
+      localStorage.setItem('auth', 'true');
+      localStorage.setItem('token', 'debug-token');
+      localStorage.setItem('permission', JSON.stringify({}));
+      localStorage.setItem('user', JSON.stringify({
+        id: 1,
+        name: 'Debug User',
+        username: 'debug',
+        rolename: 'Admin'
+      }));
+      localStorage.setItem('config', JSON.stringify({
+        mapView: 'mapbox://styles/mapbox/standard',
+        mapScale: '10'
+      }));
+      location.href = '/home';
+    </script>
+  </body>
+</html>
