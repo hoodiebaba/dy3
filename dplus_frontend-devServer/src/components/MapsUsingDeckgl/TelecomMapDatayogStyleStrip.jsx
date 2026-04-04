@@ -37,10 +37,13 @@ export function TelecomMapStyleRightControl({
       {mapStylePickerOpen ? (
         <div
           id="telecom-map-style-strip"
-          className="absolute right-full top-1/2 z-[10051] mr-3 flex -translate-y-1/2 items-center gap-3"
+          className="absolute right-full top-1/2 z-[10051] mr-2 max-w-[calc(100vw-4.5rem)] -translate-y-1/2 sm:mr-3 md:max-w-none"
           role="group"
           aria-label="Map style options"
         >
+          <div
+            className="grid grid-cols-3 gap-x-2 gap-y-7 sm:gap-x-2.5 sm:gap-y-8 md:flex md:items-center md:gap-3 md:gap-y-0"
+          >
           {TELECOM_MAP_STYLE_OPTIONS.map((opt) => {
             const active = mapStyleKeyForUi === opt.value;
             const text = opt.pickerLabel ?? opt.label;
@@ -53,7 +56,7 @@ export function TelecomMapStyleRightControl({
             return (
               <div
                 key={opt.value}
-                className="group relative flex h-[46px] w-[46px] shrink-0 items-center justify-center"
+                className="group relative mx-auto flex h-[46px] w-[46px] shrink-0 items-center justify-center md:mx-0"
               >
                 <span
                   className={`pointer-events-none absolute -top-4 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-semibold tracking-[0.08em] transition-colors duration-200 ${labelClass}`}
@@ -85,6 +88,7 @@ export function TelecomMapStyleRightControl({
               </div>
             );
           })}
+          </div>
         </div>
       ) : null}
     </div>
