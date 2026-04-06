@@ -1,5 +1,6 @@
 import React from "react";
 import { ChevronDown, Check, X } from "lucide-react";
+import DatetimeLocalWithPicker from "./DatetimeLocalWithPicker";
 import CellThematicsPanel from "./CellThematicsPanel";
 import ColorPicker from "./ColorPicker";
 import RangeFilter from "./RangeFilter";
@@ -10,9 +11,9 @@ import { KPI_RANGE_DEFAULTS, deepCopyRanges } from "./Utils/colorEngine";
 const dy3LayerCb =
   "h-3 w-3 shrink-0 appearance-none rounded-[3px] border border-white/30 bg-transparent checked:border-[#F26522] checked:bg-[#F26522]";
 
-/** Dark-theme overrides for legacy light panels inside the floating shell */
+/** Dark-theme overrides for legacy light panels inside the floating shell (Custom range / KPI labels must stay readable). */
 const floatingInner =
-  "sidebar-scroll min-h-0 flex-1 overflow-y-auto px-2 py-1.5 [&_input[type=checkbox]]:border-white/30 [&_input[type=range]]:accent-[#F26522] [&_select]:rounded [&_select]:border [&_select]:border-white/25 [&_select]:bg-[#0a1428] [&_select]:px-2 [&_select]:py-1 [&_select]:text-xs [&_select]:text-white [&_input[type=datetime-local]]:rounded [&_input[type=datetime-local]]:border [&_input[type=datetime-local]]:border-white/25 [&_input[type=datetime-local]]:bg-[#0a1428] [&_input[type=datetime-local]]:text-xs [&_input[type=datetime-local]]:text-white [&_.text-gray-500]:text-white/45 [&_.text-gray-600]:text-white/70 [&_.text-gray-400]:text-white/50 [&_.text-gray-300]:text-white/60 [&_label]:text-white/80 [&_.border-gray-300]:border-white/20 [&_.bg-white]:bg-white/[0.06] [&_.border.rounded.p-2]:border-white/15 [&_.border.rounded.p-3]:border-white/15 [&_.bg-blue-600]:bg-[#F26522] [&_.border-blue-600]:border-[#F26522] [&_.text-white]:text-white";
+  "sidebar-scroll min-h-0 flex-1 overflow-y-auto px-2 py-1.5 [&_input[type=checkbox]]:border-white/30 [&_input[type=range]]:accent-[#F26522] [&_select]:rounded [&_select]:border [&_select]:border-white/25 [&_select]:bg-[#0a1428] [&_select]:px-2 [&_select]:py-1 [&_select]:text-xs [&_select]:text-white [&_input[type=datetime-local]]:rounded [&_input[type=datetime-local]]:border [&_input[type=datetime-local]]:border-white/25 [&_input[type=datetime-local]]:bg-[#0a1428] [&_input[type=datetime-local]]:text-xs [&_input[type=datetime-local]]:text-white [&_input[type=number]]:border [&_input[type=number]]:border-white/25 [&_input[type=number]]:bg-white [&_input[type=number]]:max-w-[4.25rem] [&_input[type=number]]:px-1 [&_input[type=number]]:py-1 [&_input[type=number]]:text-xs [&_input[type=number]]:text-neutral-900 [&_input[type=number]]:rounded [&_.text-gray-500]:!text-[#e2e8f0] [&_.text-gray-600]:!text-[#f1f5f9] [&_.text-gray-400]:!text-[#cbd5e1] [&_.text-gray-300]:!text-[#e2e8f0] [&_label]:text-white/90 [&_.border-gray-300]:border-white/25 [&_.bg-white]:bg-white/15 [&_.border.rounded.p-2]:border-white/15 [&_.border.rounded.p-3]:border-white/15 [&_.bg-blue-600]:bg-[#F26522] [&_.border-blue-600]:border-[#F26522] [&_.text-white]:text-white [&_.text-blue-600]:!text-sky-300 [&_.text-red-500]:!text-red-400";
 
 const SECTION_TITLE = {
   SITE: "Sites",
@@ -115,7 +116,7 @@ const AddMapLayersPanelFloatingLayout = ({
                       activeLayerSection === "SITE" ? "text-[#F26522]" : "text-white"
                     }`}
                   >
-                    Sites (Towers)
+                    Sites
                   </span>
                 </button>
               </div>
@@ -378,6 +379,7 @@ const AddMapLayersPanelFloatingLayout = ({
                     setSiteThematicsConfig={setSiteThematicsConfig}
                     tempLegend={pendingLegends.SITES}
                     setTempLegend={(val) => setPendingLegends((prev) => ({ ...prev, SITES: val }))}
+                    datetimeVariant="dark"
                   />
                 </div>
               ) : null}
@@ -388,6 +390,7 @@ const AddMapLayersPanelFloatingLayout = ({
                     setCellThematicsConfig={setCellThematicsConfig}
                     tempLegend={pendingLegends.CELLS}
                     setTempLegend={(val) => setPendingLegends((prev) => ({ ...prev, CELLS: val }))}
+                    datetimeVariant="dark"
                   />
                 </div>
               ) : null}
@@ -572,18 +575,28 @@ const AddMapLayersPanelFloatingLayout = ({
                     ))}
                   </div>
                   <div className="mt-2 space-y-2">
-                    <span className="text-xs font-semibold text-gray-500">Start / end</span>
-                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                      <input
-                        type="datetime-local"
-                        value={startDateTime}
-                        onChange={(e) => setStartDateTime(e.target.value)}
-                      />
-                      <input
-                        type="datetime-local"
-                        value={endDateTime}
-                        onChange={(e) => setEndDateTime(e.target.value)}
-                      />
+                    <span className="text-xs font-semibold text-gray-500">Date &amp; time</span>
+                    <div className="flex min-w-0 flex-col gap-2">
+                      <div className="flex min-w-0 flex-col gap-1">
+                        <span className="text-[10px] font-semibold text-gray-500">Start</span>
+                        <DatetimeLocalWithPicker
+                          variant="dark"
+                          value={startDateTime}
+                          onChange={(e) => setStartDateTime(e.target.value)}
+                          inputClassName="w-full min-w-0"
+                          aria-label="Drive test start date and time"
+                        />
+                      </div>
+                      <div className="flex min-w-0 flex-col gap-1">
+                        <span className="text-[10px] font-semibold text-gray-500">End</span>
+                        <DatetimeLocalWithPicker
+                          variant="dark"
+                          value={endDateTime}
+                          onChange={(e) => setEndDateTime(e.target.value)}
+                          inputClassName="w-full min-w-0"
+                          aria-label="Drive test end date and time"
+                        />
+                      </div>
                     </div>
                     <div>
                       <span className="mb-1 block text-xs font-semibold text-gray-500">Thematic</span>

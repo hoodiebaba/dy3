@@ -9,25 +9,33 @@ export const TELECOM_GIS_NAV_BTN_CLASS =
 const LIGHT_MAP_STYLES = new Set(["outdoors", "voyager", "osm", "light"]);
 
 /**
- * Datayog `MapStyleRightControl` — Layers button + thumbnails `absolute right-full top-1/2 -translate-y-1/2`.
+ * Datayog `MapStyleRightControl` — Layers + thumbnails.
+ * Small screens: 3×2 grid in-flow to the left of Layers; bottom thumbnail row aligns with the Layers button (`items-end`).
+ * md+: thumbnails `absolute right-full top-1/2 -translate-y-1/2` beside the button.
  */
 export function TelecomMapStyleRightControl({
   mapStyleKeyForUi,
   onSelectMapStyle,
   mapStylePickerOpen,
   setMapStylePickerOpen,
+  stripDomId = "telecom-map-style-strip",
 }) {
   const isCurrentMapLight = LIGHT_MAP_STYLES.has(mapStyleKeyForUi);
 
   return (
-    <div className="relative" onClick={(e) => e.stopPropagation()}>
+    <div
+      className={`relative max-md:flex max-md:flex-row-reverse max-md:items-end max-md:gap-2 max-md:justify-end ${
+        mapStylePickerOpen ? "z-[10055]" : ""
+      }`}
+      onClick={(e) => e.stopPropagation()}
+    >
       <button
         type="button"
         title="Map Style"
         aria-expanded={mapStylePickerOpen}
-        aria-controls="telecom-map-style-strip"
+        aria-controls={stripDomId}
         onClick={() => setMapStylePickerOpen((o) => !o)}
-        className={`${TELECOM_GIS_NAV_BTN_CLASS} ${
+        className={`shrink-0 ${TELECOM_GIS_NAV_BTN_CLASS} ${
           mapStylePickerOpen ? "border-[#F26522]/45 bg-[rgba(18,28,58,0.96)] text-[#F26522]" : ""
         }`}
       >
@@ -36,13 +44,13 @@ export function TelecomMapStyleRightControl({
 
       {mapStylePickerOpen ? (
         <div
-          id="telecom-map-style-strip"
-          className="absolute right-full top-1/2 z-[10051] mr-2 max-w-[calc(100vw-4.5rem)] -translate-y-1/2 sm:mr-3 md:max-w-none"
+          id={stripDomId}
+          className="relative z-[10051] max-w-[min(calc(100vw-6.5rem),15.5rem)] translate-y-0 md:absolute md:right-full md:top-1/2 md:mr-3 md:max-w-[calc(100vw-5rem)] md:-translate-y-1/2 lg:max-w-none"
           role="group"
           aria-label="Map style options"
         >
           <div
-            className="grid grid-cols-3 gap-x-2 gap-y-7 sm:gap-x-2.5 sm:gap-y-8 md:flex md:items-center md:gap-3 md:gap-y-0"
+            className="grid grid-cols-3 gap-x-2 gap-y-7 sm:gap-x-2.5 md:flex md:items-center md:gap-3 md:gap-y-0"
           >
           {TELECOM_MAP_STYLE_OPTIONS.map((opt) => {
             const active = mapStyleKeyForUi === opt.value;
@@ -56,10 +64,10 @@ export function TelecomMapStyleRightControl({
             return (
               <div
                 key={opt.value}
-                className="group relative mx-auto flex h-[46px] w-[46px] shrink-0 items-center justify-center md:mx-0"
+                className="group relative mx-auto flex w-full min-w-0 max-w-[52px] flex-col items-center gap-0.5 md:mx-0 md:h-[46px] md:w-[46px] md:max-w-none md:justify-center md:gap-0"
               >
                 <span
-                  className={`pointer-events-none absolute -top-4 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-semibold tracking-[0.08em] transition-colors duration-200 ${labelClass}`}
+                  className={`pointer-events-none w-full min-h-[1.125rem] text-center text-[8px] font-semibold leading-tight tracking-[0.08em] transition-colors duration-200 max-md:line-clamp-2 md:absolute md:-top-4 md:left-1/2 md:min-h-0 md:w-auto md:-translate-x-1/2 md:whitespace-nowrap md:text-[9px] ${labelClass}`}
                 >
                   {text}
                 </span>

@@ -106,12 +106,20 @@ const Login = () => {
             .login-shell input { color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; caret-color: #ffffff; font-family: inherit; }
             .login-shell input::placeholder { color: #64748b !important; -webkit-text-fill-color: #64748b !important; opacity: 1; }
             .login-shell input:-webkit-autofill, .login-shell input:-webkit-autofill:hover, .login-shell input:-webkit-autofill:focus, .login-shell input:-webkit-autofill:active { -webkit-text-fill-color: #ffffff !important; caret-color: #ffffff; border: 1px solid rgba(255,255,255,0.05) !important; -webkit-box-shadow: 0 0 0 1000px rgba(3,6,18,0.98) inset !important; box-shadow: 0 0 0 1000px rgba(3,6,18,0.98) inset !important; transition: background-color 999999s ease-in-out 0s; background-clip: content-box !important; }
+            /* prefers-reduced-motion: keep gradient, kill motion on desktop */
+            @media (prefers-reduced-motion: reduce) {
+              .login-decor-animate, .login-decor-animate * { animation: none !important; }
+              .login-decor-animate .planet-surface { animation: none !important; }
+            }
           `,
         }}
       />
 
-      <div className="nebula-bg pointer-events-none absolute inset-0 overflow-hidden">
+      {/* z-0 keeps decor strictly below the form; missing z-index caused some mobile WebKit paints to cover inputs */}
+      <div className="nebula-bg pointer-events-none absolute inset-0 z-0 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.05),transparent_16%),radial-gradient(circle_at_14%_84%,rgba(242,101,34,0.09),transparent_18%),radial-gradient(circle_at_88%_38%,rgba(59,130,246,0.14),transparent_24%)]" />
+        {/* Below md: skip stars/orbits/planets entirely — hundreds of animated nodes cause visible flicker on mobile WebKit */}
+        <div className="login-decor-animate hidden md:block" aria-hidden>
         <div className="absolute left-1/2 top-1/2 h-[240vh] w-[240vw] -translate-x-1/2 -translate-y-1/2 opacity-55" style={{ animation: 'orbit360 280s linear infinite' }}>
           {mounted && farStars.map((star) => (
             <span
@@ -212,10 +220,14 @@ const Login = () => {
             </div>
           </div>
         ))}
+        </div>
       </div>
 
-      <section className="relative z-10 mx-auto flex min-h-[calc(100vh-2.5rem)] w-full max-w-[1180px] items-start justify-center py-2 sm:min-h-0 sm:items-center sm:py-0">
-        <div className="relative my-auto w-full max-w-[540px] overflow-hidden rounded-[34px] border border-white/6 bg-[#0a1021] p-5 shadow-[0_24px_72px_rgba(0,0,0,0.58)] sm:p-8" style={{ transform: 'translateZ(0)', backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
+      <section className="relative z-20 mx-auto flex min-h-[calc(100dvh-2.5rem)] w-full max-w-[1180px] items-start justify-center py-2 sm:min-h-0 sm:items-center sm:py-0">
+        <div
+          className="relative my-auto w-full max-w-[540px] rounded-[34px] border border-white/6 bg-[#0a1021] p-5 shadow-[0_24px_72px_rgba(0,0,0,0.58)] sm:overflow-hidden sm:p-8 sm:[transform:translateZ(0)] sm:[backface-visibility:hidden]"
+          style={{ WebkitFontSmoothing: 'antialiased' }}
+        >
           <div aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.015),rgba(255,255,255,0.004)_34%,rgba(5,10,26,0.015)_100%)]" />
           <div aria-hidden className="pointer-events-none absolute inset-x-8 top-0 h-px bg-white/8" />
 

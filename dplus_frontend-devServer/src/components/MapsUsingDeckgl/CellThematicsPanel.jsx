@@ -14,6 +14,7 @@ import {
   deepCopyRanges,
 } from "./Utils/colorEngine";
 import RangeFilter from "./RangeFilter";
+import DatetimeLocalWithPicker from "./DatetimeLocalWithPicker";
 
 const THEMATIC_TYPES = [
 "KPIs",
@@ -30,9 +31,12 @@ const kpiThematicOptions = [
 ];
 
 // const CellThematicsPanel = ({ openDropdown, toggleDropdown }) => {
-const CellThematicsPanel = ({ setCellThematicsConfig,
+const CellThematicsPanel = ({
+  setCellThematicsConfig,
   tempLegend,
-  setTempLegend }) => {
+  setTempLegend,
+  datetimeVariant = "light",
+}) => {
 
     const dispatch = useDispatch();
 
@@ -679,31 +683,33 @@ const CellThematicsPanel = ({ setCellThematicsConfig,
             {tempType === "KPIs" && (
                 <div className="border-t pt-3 space-y-4">
 
-                    {/* Date/Time */}
-                    <div className="grid grid-cols-2 gap-3">
+                    {/* Date/Time — start row, then end row */}
+                    <div className="flex flex-col gap-3">
                     <div className="flex flex-col">
-                        <label className="text-xs font-semibold text-gray-500 mb-1">
+                        <span className="mb-1 text-xs font-semibold text-gray-500">
                         Start: Date/Time
-                        </label>
+                        </span>
 
-                        <input
-                        type="datetime-local"
+                        <DatetimeLocalWithPicker
+                        variant={datetimeVariant}
                         value={kpiStartDateTime}
                         onChange={(e) => setKpiStartDateTime(e.target.value)}
-                        className="border rounded px-2 py-1 text-xs w-full"
+                        inputClassName="w-full rounded border px-2 py-1 text-xs"
+                        aria-label="KPI range start date and time"
                         />
                     </div>
 
                     <div className="flex flex-col">
-                        <label className="text-xs font-semibold text-gray-500 mb-1">
+                        <span className="mb-1 text-xs font-semibold text-gray-500">
                         End: Date/Time
-                        </label>
+                        </span>
 
-                        <input
-                        type="datetime-local"
+                        <DatetimeLocalWithPicker
+                        variant={datetimeVariant}
                         value={kpiEndDateTime}
                         onChange={(e) => setKpiEndDateTime(e.target.value)}
-                        className="border rounded px-2 py-1 text-xs w-full"
+                        inputClassName="w-full rounded border px-2 py-1 text-xs"
+                        aria-label="KPI range end date and time"
                         />
                     </div>
                     </div>
@@ -937,7 +943,7 @@ const CellThematicsPanel = ({ setCellThematicsConfig,
 
                         <div key={tech} className="flex items-center gap-1">
 
-                            <span>{tech}</span>
+                            <span className="font-semibold text-[#F26522]">{tech}</span>
 
                             <div
                             className="w-4 h-4 rounded"
@@ -969,7 +975,13 @@ const CellThematicsPanel = ({ setCellThematicsConfig,
                         key={tech}
                         className="flex justify-between items-center mb-2"
                         >
-                        <span className="text-sm">{tech}</span>
+                        <span
+                          className={`text-sm font-semibold ${
+                            ["2G", "3G", "4G", "5G"].includes(tech) ? "text-[#F26522]" : ""
+                          }`}
+                        >
+                          {tech}
+                        </span>
 
                         <ColorPicker
                             value={
@@ -1069,16 +1081,18 @@ const CellThematicsPanel = ({ setCellThematicsConfig,
                             Preview
                         </div>
 
-                        <div className="max-h-[150px] overflow-y-auto grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
+                        <div className="max-h-[150px] space-y-2 overflow-y-auto overflow-x-hidden text-xs">
                             {Object.entries(defaultColors.Band).map(([band, color]) => (
-                                <div key={band} className="flex items-center gap-2">
+                                <div key={band} className="flex min-w-0 flex-col gap-1 border-b border-gray-300 pb-2 last:border-b-0 last:pb-0">
                                     <div
-                                        className="w-3 h-3 rounded-sm flex-shrink-0"
+                                        className="h-3 w-3 shrink-0 rounded-sm"
                                         style={{
                                             backgroundColor: tempColors[band] || color
                                         }}
                                     />
-                                    <span className="truncate">{band}</span>
+                                    <span className="min-w-0 whitespace-normal break-words leading-snug">
+                                        {band}
+                                    </span>
                                 </div>
                             ))}
                         </div>
@@ -1093,7 +1107,7 @@ const CellThematicsPanel = ({ setCellThematicsConfig,
                         <div className="max-h-[200px] overflow-y-auto"> 
                             {Object.entries(techGrouped).map(([tech, bands]) => (
                                 <div key={tech} className="mb-3">
-                                    <div className="font-semibold text-sm mb-1">
+                                    <div className="mb-1 text-sm font-semibold !text-[#F26522]">
                                         {tech}
                                     </div>
 

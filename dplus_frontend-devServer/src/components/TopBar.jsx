@@ -264,10 +264,12 @@ const TopBar = ({ isSidebarOpen, isMobileViewport, onSidebarToggle }) => {
                     <span className="text-[#ffffff]">DATA</span>
                     <span className="text-[#F26522]">PLUS</span>
                   </span>
-                  <span className="flex w-full min-w-0 items-center justify-between whitespace-nowrap text-[9px] font-medium leading-none tracking-[0.12em] text-[#ffffff] sm:text-[10px] lg:text-[11px]">
+                  <span className="flex w-max min-w-0 items-center gap-0.5 whitespace-nowrap text-[9px] font-medium leading-none tracking-[0.12em] text-[#ffffff] sm:gap-1 sm:text-[10px] lg:text-[11px]">
                     <span className="shrink-0">Powered</span>
                     <span className="shrink-0">by</span>
-                    <span className="shrink-0 font-bold">Datayog</span>
+                    <span className="shrink-0 font-bold tracking-tight">
+                      Data<span className="text-[1.08em] font-extrabold">Y</span>og
+                    </span>
                   </span>
                 </span>
               </div>

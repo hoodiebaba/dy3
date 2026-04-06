@@ -2209,6 +2209,9 @@ const siteLayer = useMemo(() => {
     dispatch(MapActions.setLayerLegend(layer, false));
   };
 
+  const gisCompassActive =
+    Math.abs(activeViewState.bearing ?? 0) > 0.01 || Math.abs(activeViewState.pitch ?? 0) > 0.01;
+
   /* Previously: `widgets={[new CompassWidget({ placement: "top-right" })]}` — replaced by Datayog compass UI below. */
 
   /* ============================================================
@@ -2452,34 +2455,27 @@ const siteLayer = useMemo(() => {
           />
         </DeckGL>
 
-        {/* Compass only (top-right). Map style tray lives bottom-right above Settings. */}
+        {/* Compass: top-right on md+; small screens use copy above Fit to Data (bottom stack). */}
         <div
-          className="pointer-events-auto absolute right-5 top-5 z-[10020]"
+          className="pointer-events-auto absolute right-5 top-5 z-[10020] max-md:hidden"
           onClick={(event) => event.stopPropagation()}
           onDoubleClick={(event) => event.stopPropagation()}
           onPointerDown={(event) => event.stopPropagation()}
         >
-          {(() => {
-            const compassActive =
-              Math.abs(activeViewState.bearing ?? 0) > 0.01 ||
-              Math.abs(activeViewState.pitch ?? 0) > 0.01;
-            return (
-              <button
-                type="button"
-                title="Reset North"
-                onClick={handleResetNorth}
-                className={`${GIS_TRAY_BTN_CLASS} ${
-                  compassActive ? "border-[#F26522]/45 bg-[rgba(31,21,26,0.96)] text-[#F26522]" : ""
-                }`}
-              >
-                <Compass
-                  className="h-5 w-5 transition-transform duration-200"
-                  style={{ transform: `rotate(${-(activeViewState.bearing ?? 0)}deg)` }}
-                  aria-hidden
-                />
-              </button>
-            );
-          })()}
+          <button
+            type="button"
+            title="Reset North"
+            onClick={handleResetNorth}
+            className={`${GIS_TRAY_BTN_CLASS} ${
+              gisCompassActive ? "border-[#F26522]/45 bg-[rgba(31,21,26,0.96)] text-[#F26522]" : ""
+            }`}
+          >
+            <Compass
+              className="h-5 w-5 transition-transform duration-200"
+              style={{ transform: `rotate(${-(activeViewState.bearing ?? 0)}deg)` }}
+              aria-hidden
+            />
+          </button>
         </div>
 
         {coordinatePopup && coordinatePopupScreen ? (
@@ -2790,78 +2786,174 @@ const siteLayer = useMemo(() => {
         {/* Datayog `gis-engine/page.js` — Bottom Right Control Stack (order + classes match) */}
         <div
           ref={mapStylePickerRef}
-          className="pointer-events-auto absolute bottom-6 right-5 z-[10050] flex flex-col items-end gap-3"
+          className="pointer-events-auto absolute bottom-6 right-5 z-[10050]"
           onClick={(e) => e.stopPropagation()}
           onDoubleClick={(e) => e.stopPropagation()}
           onPointerDown={(e) => e.stopPropagation()}
         >
-          <button
-            type="button"
-            title="Fit to Data"
-            onClick={fitToData}
-            className={`${GIS_TRAY_BTN_CLASS} ${rawCells?.length ? "" : "pointer-events-none opacity-60"}`}
-          >
-            <Focus className="h-5 w-5" aria-hidden />
-          </button>
+          {/*
+            Mobile (<md): Compass + Fit use fixed bottom offsets so opening the map-style tray does not
+            move them. Layers + tools stay bottom-anchored; tray grows upward only.
+          */}
+          <div className="relative w-0 max-md:h-0 overflow-visible md:hidden">
+            <div className="absolute bottom-0 right-0 flex items-center justify-end gap-3">
+              {toolsExpanded ? (
+                <>
+                  <button
+                    type="button"
+                    title="Zoom In"
+                    onClick={() => applyGisZoomDelta(1)}
+                    className={GIS_TRAY_BTN_CLASS}
+                  >
+                    <Plus className="h-5 w-5" aria-hidden />
+                  </button>
+                  <button
+                    type="button"
+                    title="Zoom Out"
+                    onClick={() => applyGisZoomDelta(-1)}
+                    className={GIS_TRAY_BTN_CLASS}
+                  >
+                    <Minus className="h-5 w-5" aria-hidden />
+                  </button>
+                  <button type="button" title="Fullscreen" onClick={toggleGisFullscreen} className={GIS_TRAY_BTN_CLASS}>
+                    <Maximize className="h-5 w-5" aria-hidden />
+                  </button>
+                  <button
+                    type="button"
+                    title="Measurement"
+                    onClick={toggleGisMeasuring}
+                    className={`${GIS_TRAY_BTN_CLASS} ${
+                      gisMeasuring ? "border-[#F26522]/45 bg-[rgba(31,21,26,0.96)] text-[#F26522]" : ""
+                    }`}
+                  >
+                    <Ruler className={`h-5 w-5 ${gisMeasuring ? "!text-[#F26522]" : ""}`} aria-hidden />
+                  </button>
+                </>
+              ) : null}
+              <button
+                type="button"
+                title={toolsExpanded ? "Close tools" : "Tools — zoom, fullscreen, measurement"}
+                onClick={() => setToolsExpanded((c) => !c)}
+                className={`${GIS_TRAY_BTN_CLASS} ${
+                  toolsExpanded ? "border-[#F26522]/45 bg-[rgba(18,28,58,0.96)] text-[#F26522]" : ""
+                }`}
+              >
+                {toolsExpanded ? (
+                  <X className="h-5 w-5" aria-hidden />
+                ) : (
+                  <Settings className="h-5 w-5" aria-hidden />
+                )}
+              </button>
+            </div>
+            <div className="absolute right-0 bottom-[calc(46px+0.75rem)] flex w-max max-w-[calc(100vw-1.5rem)] justify-end overflow-visible">
+              <TelecomMapStyleRightControl
+                stripDomId="telecom-map-style-strip-mobile"
+                mapStyleKeyForUi={mapStyleKeyForUi}
+                onSelectMapStyle={(value) => {
+                  dispatch(MapActions.setMapConfig({ mapView: value }));
+                  dispatch(AuthActions.setupConf(true, { mapView: value }));
+                }}
+                mapStylePickerOpen={mapStylePickerOpen}
+                setMapStylePickerOpen={setMapStylePickerOpen}
+              />
+            </div>
+            <div className="absolute right-0 bottom-[calc(2*(46px+0.75rem))] flex justify-end">
+              <button
+                type="button"
+                title="Fit to Data"
+                onClick={fitToData}
+                className={`${GIS_TRAY_BTN_CLASS} ${rawCells?.length ? "" : "pointer-events-none opacity-60"}`}
+              >
+                <Focus className="h-5 w-5" aria-hidden />
+              </button>
+            </div>
+            <div className="absolute right-0 bottom-[calc(3*(46px+0.75rem))] flex justify-end">
+              <button
+                type="button"
+                title="Reset North"
+                onClick={handleResetNorth}
+                className={`${GIS_TRAY_BTN_CLASS} ${
+                  gisCompassActive ? "border-[#F26522]/45 bg-[rgba(31,21,26,0.96)] text-[#F26522]" : ""
+                }`}
+              >
+                <Compass
+                  className="h-5 w-5 transition-transform duration-200"
+                  style={{ transform: `rotate(${-(activeViewState.bearing ?? 0)}deg)` }}
+                  aria-hidden
+                />
+              </button>
+            </div>
+          </div>
 
-          <TelecomMapStyleRightControl
-            mapStyleKeyForUi={mapStyleKeyForUi}
-            onSelectMapStyle={(value) => {
-              dispatch(MapActions.setMapConfig({ mapView: value }));
-              dispatch(AuthActions.setupConf(true, { mapView: value }));
-            }}
-            mapStylePickerOpen={mapStylePickerOpen}
-            setMapStylePickerOpen={setMapStylePickerOpen}
-          />
-
-          <div className="flex items-center justify-end gap-3">
-            {toolsExpanded ? (
-              <>
-                <button
-                  type="button"
-                  title="Zoom In"
-                  onClick={() => applyGisZoomDelta(1)}
-                  className={GIS_TRAY_BTN_CLASS}
-                >
-                  <Plus className="h-5 w-5" aria-hidden />
-                </button>
-                <button
-                  type="button"
-                  title="Zoom Out"
-                  onClick={() => applyGisZoomDelta(-1)}
-                  className={GIS_TRAY_BTN_CLASS}
-                >
-                  <Minus className="h-5 w-5" aria-hidden />
-                </button>
-                <button type="button" title="Fullscreen" onClick={toggleGisFullscreen} className={GIS_TRAY_BTN_CLASS}>
-                  <Maximize className="h-5 w-5" aria-hidden />
-                </button>
-                <button
-                  type="button"
-                  title="Measurement"
-                  onClick={toggleGisMeasuring}
-                  className={`${GIS_TRAY_BTN_CLASS} ${
-                    gisMeasuring ? "border-[#F26522]/45 bg-[rgba(31,21,26,0.96)] text-[#F26522]" : ""
-                  }`}
-                >
-                  <Ruler className={`h-5 w-5 ${gisMeasuring ? "!text-[#F26522]" : ""}`} aria-hidden />
-                </button>
-              </>
-            ) : null}
+          <div className="hidden flex-col items-end gap-3 md:flex">
             <button
               type="button"
-              title={toolsExpanded ? "Close tools" : "Tools — zoom, fullscreen, measurement"}
-              onClick={() => setToolsExpanded((c) => !c)}
-              className={`${GIS_TRAY_BTN_CLASS} ${
-                toolsExpanded ? "border-[#F26522]/45 bg-[rgba(31,21,26,0.96)] text-[#F26522]" : ""
-              }`}
+              title="Fit to Data"
+              onClick={fitToData}
+              className={`${GIS_TRAY_BTN_CLASS} ${rawCells?.length ? "" : "pointer-events-none opacity-60"}`}
             >
-              {toolsExpanded ? (
-                <X className="h-5 w-5" aria-hidden />
-              ) : (
-                <Settings className="h-5 w-5" aria-hidden />
-              )}
+              <Focus className="h-5 w-5" aria-hidden />
             </button>
+
+            <TelecomMapStyleRightControl
+              mapStyleKeyForUi={mapStyleKeyForUi}
+              onSelectMapStyle={(value) => {
+                dispatch(MapActions.setMapConfig({ mapView: value }));
+                dispatch(AuthActions.setupConf(true, { mapView: value }));
+              }}
+              mapStylePickerOpen={mapStylePickerOpen}
+              setMapStylePickerOpen={setMapStylePickerOpen}
+            />
+
+            <div className="flex items-center justify-end gap-3">
+              {toolsExpanded ? (
+                <>
+                  <button
+                    type="button"
+                    title="Zoom In"
+                    onClick={() => applyGisZoomDelta(1)}
+                    className={GIS_TRAY_BTN_CLASS}
+                  >
+                    <Plus className="h-5 w-5" aria-hidden />
+                  </button>
+                  <button
+                    type="button"
+                    title="Zoom Out"
+                    onClick={() => applyGisZoomDelta(-1)}
+                    className={GIS_TRAY_BTN_CLASS}
+                  >
+                    <Minus className="h-5 w-5" aria-hidden />
+                  </button>
+                  <button type="button" title="Fullscreen" onClick={toggleGisFullscreen} className={GIS_TRAY_BTN_CLASS}>
+                    <Maximize className="h-5 w-5" aria-hidden />
+                  </button>
+                  <button
+                    type="button"
+                    title="Measurement"
+                    onClick={toggleGisMeasuring}
+                    className={`${GIS_TRAY_BTN_CLASS} ${
+                      gisMeasuring ? "border-[#F26522]/45 bg-[rgba(31,21,26,0.96)] text-[#F26522]" : ""
+                    }`}
+                  >
+                    <Ruler className={`h-5 w-5 ${gisMeasuring ? "!text-[#F26522]" : ""}`} aria-hidden />
+                  </button>
+                </>
+              ) : null}
+              <button
+                type="button"
+                title={toolsExpanded ? "Close tools" : "Tools — zoom, fullscreen, measurement"}
+                onClick={() => setToolsExpanded((c) => !c)}
+                className={`${GIS_TRAY_BTN_CLASS} ${
+                  toolsExpanded ? "border-[#F26522]/45 bg-[rgba(18,28,58,0.96)] text-[#F26522]" : ""
+                }`}
+              >
+                {toolsExpanded ? (
+                  <X className="h-5 w-5" aria-hidden />
+                ) : (
+                  <Settings className="h-5 w-5" aria-hidden />
+                )}
+              </button>
+            </div>
           </div>
         </div>
 

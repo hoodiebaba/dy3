@@ -1430,6 +1430,7 @@ import OpacitySlider from "./OpacitySlider";
 import SiteThematicsPanel from "./SiteThematicsPanel";
 import { KPI_RANGE_DEFAULTS, deepCopyRanges } from "./Utils/colorEngine";
 import AddMapLayersPanelFloatingLayout from "./AddMapLayersPanelFloatingLayout";
+import DatetimeLocalWithPicker from "./DatetimeLocalWithPicker";
 
 const AddMapLayersPanel = ({ onClose, mode = "toolbar" }) => {
 
@@ -2078,7 +2079,7 @@ const AddMapLayersPanel = ({ onClose, mode = "toolbar" }) => {
                                 if (newVal) setExpanded("SITE");
                             }}
                         />
-                        <span className="font-medium">Sites (Towers)</span>
+                        <span className="font-medium">Sites</span>
                     </div>
                     <span className="text-xl select-none">
                         {expandedLayer === "SITE" ? <UilAngleUp size={22}/> : <UilAngleDown size={22}/>}
@@ -2474,20 +2475,26 @@ onChange={() => toggleRfRegion(name)}
                             ))}
                         </div>
                         <div className="mt-3 space-y-3">
-                            <span className="text-xs font-semibold text-gray-500">Select Start/End DateTime</span>
-                            <div className="grid grid-cols-2 gap-2">
-                                <input
-                                    type="datetime-local"
+                            <span className="text-xs font-semibold text-gray-500">Date &amp; time</span>
+                            <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-1">
+                                  <span className="text-[10px] font-semibold text-gray-500">Start</span>
+                                  <DatetimeLocalWithPicker
                                     value={startDateTime}
                                     onChange={(e) => setStartDateTime(e.target.value)}
-                                    className="border rounded px-2 py-1 text-xs"
-                                />
-                                <input
-                                    type="datetime-local"
+                                    inputClassName="w-full rounded border px-2 py-1 text-xs"
+                                    aria-label="Drive test start date and time"
+                                  />
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                  <span className="text-[10px] font-semibold text-gray-500">End</span>
+                                  <DatetimeLocalWithPicker
                                     value={endDateTime}
                                     onChange={(e) => setEndDateTime(e.target.value)}
-                                    className="border rounded px-2 py-1 text-xs"
-                                />
+                                    inputClassName="w-full rounded border px-2 py-1 text-xs"
+                                    aria-label="Drive test end date and time"
+                                  />
+                                </div>
                             </div>
                             <div className="mb-3">
                                 <span className="text-xs font-semibold text-gray-500 block mb-1">Apply Thematic by</span>
